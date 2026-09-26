@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kuponsuz</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#2e7d4f">
+  <link rel="apple-touch-icon" href="ikon-192.png">
+</head>
+<body>
+
+  <!-- ===== TANIŞMA EKRANI ===== -->
+  <div id="tanisma" hidden>
+
+    <div class="kart adim" id="adim1">
+      <h1>Hoş geldin 👋</h1>
+      <p>Bu uygulamada bahis kuponlarını gerçekten oynamadan yapabilir, cebinde kalan parayı adım adım görebilirsin.</p>
+      <p>Önce seni biraz tanıyalım.</p>
+      <button class="buton" data-sonraki="adim2">Başlayalım</button>
+    </div>
+
+    <div class="kart adim" id="adim2" hidden>
+      <h2>18 yaşından büyük müsün?</h2>
+      <div class="satir">
+        <button class="buton" data-sonraki="adim3">Evet</button>
+        <button class="buton ikincil" data-sonraki="adimGenc">Hayır</button>
+      </div>
+    </div>
+
+    <div class="kart adim" id="adimGenc" hidden>
+      <h2>Bu uygulama 18 yaş ve üzeri içindir</h2>
+      <p>Bahisle ilgili zorlandığın bir durum varsa, bunu güvendiğin bir yetişkinle ya da okulundaki rehber öğretmeninle konuşmak iyi bir ilk adım olabilir.</p>
+      <p>Ayrıca 115 YEDAM Danışma Hattı'nı ücretsiz arayabilirsin; 12 yaş ve üzerindeki herkese destek veriyor.</p>
+      <a class="buton baglanti" href="tel:115">📞 115'i ara</a>
+      <button class="buton ikincil bosluklu" data-sonraki="adim2">Geri dön</button>
+    </div>
+
+    <div class="kart adim" id="adim3" hidden>
+      <h2>Şu anda bahis oynuyor musun?</h2>
+      <div class="satir">
+        <button class="buton" data-sonraki="adim4">Evet</button>
+        <button class="buton ikincil" data-sonraki="adimOynamiyor">Hayır</button>
+      </div>
+    </div>
+
+    <div class="kart adim" id="adimOynamiyor" hidden>
+      <h2>O zaman çok iyi bir yerdesin 💚</h2>
+      <p>Bu uygulama, bahis oynayan ve bunu azaltmak ya da bırakmak isteyenler için tasarlandı. Hiç başlamamak, biriktirebileceğin en büyük birikim.</p>
+      <button class="buton ikincil" data-sonraki="adim3">Geri dön</button>
+    </div>
+
+    <div class="kart adim" id="adim4" hidden>
+      <h2>Amacın ne?</h2>
+      <p>Buna göre seni destekleyeceğiz. Sonradan değiştirebilirsin.</p>
+      <button class="buton" data-amac="azaltmak">Bahsi azaltmak istiyorum</button>
+      <button class="buton ikincil bosluklu" data-amac="birakmak">Bahsi bırakmak istiyorum</button>
+    </div>
+
+  </div>
+
+  <!-- ===== ANA UYGULAMA ===== -->
+  <main id="uygulama" hidden>
+
+    <div class="kart">
+      <h1>Kasam</h1>
+      <p>Bahis oynamayarak biriktirdiğin tutar:</p>
+      <h2 class="tutar" id="tutar">0 TL</h2>
+      <p class="net-sonuc" id="netSonuc"></p>
+      <p class="amac" id="amacYazisi"></p>
+    </div>
+
+    <div class="kart">
+      <h2>Hedefim</h2>
+
+      <div id="hedefFormu">
+        <p class="durum">Biriktirdiğin parayla ne almak isterdin?</p>
+        <input type="text" id="hedefAdi" class="girdi" placeholder="Hedef (ör. Televizyon)">
+        <input type="number" id="hedefTutari" class="girdi" placeholder="Hedef tutar (TL)">
+        <button class="buton" id="hedefKaydet">Hedefi kaydet</button>
+      </div>
+
+      <div id="hedefIlerleme" hidden>
+        <p class="hedef-baslik" id="hedefBaslik"></p>
+        <div class="cubuk"><div class="cubuk-dolgu" id="cubukDolgu"></div></div>
+        <p class="durum" id="hedefDurum"></p>
+        <button class="buton ikincil kucuk" id="hedefDegistir">Hedefi değiştir</button>
+      </div>
+
+      <p class="hedef-mesaji" id="hedefMesaji"></p>
+      <ul class="rozetler" id="rozetler"></ul>
+    </div>
+
+    <div class="kart">
+      <h2>Yeni kupon</h2>
+
+      <input type="text" id="mac" class="girdi" placeholder="Maç (ör. Galatasaray - Fenerbahçe)">
+      <div class="satir">
+        <select id="tahmin" class="girdi">
+          <option>MS 1</option>
+          <option>MS X</option>
+          <option>MS 2</option>
+          <option>KG Var</option>
+          <option>KG Yok</option>
+          <option>2.5 Üst</option>
+          <option>2.5 Alt</option>
+        </select>
+        <input type="number" id="oran" class="girdi" step="0.01" placeholder="Oran">
+      </div>
+      <button class="buton ikincil" id="macEkle">+ Maçı kupona ekle</button>
+
+      <ul class="mac-listesi" id="macListesi"></ul>
+
+      <div class="ozet">
+        <span>Toplam oran</span>
+        <strong id="toplamOran">-</strong>
+      </div>
+
+      <input type="number" id="miktar" class="girdi" placeholder="Kupona yatıracağın tutar (TL)">
+
+      <div class="ozet">
+        <span>Olası kazanç</span>
+        <strong id="olasiKazanc">-</strong>
+      </div>
+
+      <button class="buton" id="onayla">Kuponu onayla</button>
+      <p class="mesaj" id="mesaj"></p>
+    </div>
+
+    <div class="kart">
+      <h2>Kuponlarım</h2>
+      <ul class="kupon-listesi" id="kuponListesi"></ul>
+    </div>
+
+    <div class="kart" id="destek">
+      <h2>Destek</h2>
+      <p>Bahsi azaltmak ya da bırakmak kolay değil ve bunu tek başına yapmak zorunda değilsin.</p>
+      <p><strong>115 YEDAM Danışma Hattı</strong> (Yeşilay Danışmanlık Merkezi), kumar ve bahis konusunda ücretsiz destek veriyor. Hat 08.30 ile 00.00 arasında açık; bahis oynayanlar kadar aileleri ve yakınları da arayabilir.</p>
+      <a class="buton baglanti" href="tel:115">📞 115'i ara</a>
+      <a class="buton ikincil baglanti bosluklu" href="https://www.yedam.org.tr" target="_blank" rel="noopener">yedam.org.tr</a>
+      <p class="durum">Kendine zarar verme düşüncelerin olursa beklemeden 112'yi ara.</p>
+    </div>
+
+    <button class="metin-buton" id="tanismayiSifirla">Tanışma ekranını tekrar göster</button>
+
+  </main>
+
+   <script src="app.js"></script>
+  <script src="tanisma.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js");
+    }
+  </script>
+</body>
+</html>
