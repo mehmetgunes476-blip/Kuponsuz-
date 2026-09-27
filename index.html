@@ -2,20 +2,23 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Kuponsuz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Figtree:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#2e7d4f">
+  <meta name="theme-color" content="#1F4D3A">
   <link rel="apple-touch-icon" href="ikon-192.png">
 </head>
 <body>
 
-  <!-- ===== TANIŞMA EKRANI ===== -->
-  <div id="tanisma" hidden>
+  <!-- ================= TANIŞMA ================= -->
+  <div id="tanisma" class="tanisma" hidden>
 
     <div class="kart adim" id="adim1">
-      <h1>Hoş geldin 👋</h1>
+      <h1>Hoş geldin</h1>
       <p>Bu uygulamada bahis kuponlarını gerçekten oynamadan yapabilir, cebinde kalan parayı adım adım görebilirsin.</p>
       <p>Önce seni biraz tanıyalım.</p>
       <button class="buton" data-sonraki="adim2">Başlayalım</button>
@@ -25,128 +28,486 @@
       <h2>18 yaşından büyük müsün?</h2>
       <div class="satir">
         <button class="buton" data-sonraki="adim3">Evet</button>
-        <button class="buton ikincil" data-sonraki="adimGenc">Hayır</button>
+        <button class="buton cizgili" data-sonraki="adimGenc">Hayır</button>
       </div>
     </div>
 
     <div class="kart adim" id="adimGenc" hidden>
       <h2>Bu uygulama 18 yaş ve üzeri içindir</h2>
       <p>Bahisle ilgili zorlandığın bir durum varsa, bunu güvendiğin bir yetişkinle ya da okulundaki rehber öğretmeninle konuşmak iyi bir ilk adım olabilir.</p>
-      <p>Ayrıca 115 YEDAM Danışma Hattı'nı ücretsiz arayabilirsin; 12 yaş ve üzerindeki herkese destek veriyor.</p>
-      <a class="buton baglanti" href="tel:115">📞 115'i ara</a>
-      <button class="buton ikincil bosluklu" data-sonraki="adim2">Geri dön</button>
+      <p>115 YEDAM Danışma Hattı'nı da ücretsiz arayabilirsin; 12 yaş ve üzerindeki herkese destek veriyor.</p>
+      <a class="buton" href="tel:115">115'i ara</a>
+      <button class="buton cizgili" data-sonraki="adim2">Geri dön</button>
     </div>
 
     <div class="kart adim" id="adim3" hidden>
       <h2>Şu anda bahis oynuyor musun?</h2>
       <div class="satir">
         <button class="buton" data-sonraki="adim4">Evet</button>
-        <button class="buton ikincil" data-sonraki="adimOynamiyor">Hayır</button>
+        <button class="buton cizgili" data-sonraki="adimOynamiyor">Hayır</button>
       </div>
     </div>
 
     <div class="kart adim" id="adimOynamiyor" hidden>
-      <h2>O zaman çok iyi bir yerdesin 💚</h2>
+      <h2>O zaman çok iyi bir yerdesin</h2>
       <p>Bu uygulama, bahis oynayan ve bunu azaltmak ya da bırakmak isteyenler için tasarlandı. Hiç başlamamak, biriktirebileceğin en büyük birikim.</p>
-      <button class="buton ikincil" data-sonraki="adim3">Geri dön</button>
+      <button class="buton cizgili" data-sonraki="adim3">Geri dön</button>
     </div>
 
     <div class="kart adim" id="adim4" hidden>
       <h2>Amacın ne?</h2>
       <p>Buna göre seni destekleyeceğiz. Sonradan değiştirebilirsin.</p>
       <button class="buton" data-amac="azaltmak">Bahsi azaltmak istiyorum</button>
-      <button class="buton ikincil bosluklu" data-amac="birakmak">Bahsi bırakmak istiyorum</button>
+      <button class="buton cizgili" data-amac="birakmak">Bahsi bırakmak istiyorum</button>
+    </div>
+
+    <div class="kart adim" id="adim5" hidden>
+      <h2>Canın kupon yapmak istediğinde sana ne iyi gelir?</h2>
+      <p>Seçtiklerinden sana özel öneriler çıkaracağız. İstediğin zaman değiştirebilirsin.</p>
+      <div class="cipler" id="etkinlikCipleri"></div>
+      <p class="soluk kucuk">Yürüyüş, nefes egzersizi ve birini aramak varsayılan olarak seçili; çoğu kişiye iyi gelen başlangıç önerileri.</p>
+      <div class="alan">
+        <label class="etiket" for="yeniEtkinlik">Listede yok mu? Kendin ekle</label>
+        <div class="satir">
+          <input type="text" id="yeniEtkinlik" class="girdi" placeholder="ör. Gitar çalmak">
+          <button class="buton kucuk otomatik" id="etkinlikEkle">Ekle</button>
+        </div>
+      </div>
+      <button class="buton" id="etkinlikDevam">Devam et</button>
+    </div>
+
+    <div class="kart adim" id="adim6" hidden>
+      <h2>Kendine bir not yaz</h2>
+      <p>Canın kupon yapmak istediğinde bu not karşına çıkacak. O ana dair kendine ne söylemek isterdin?</p>
+      <textarea id="kendineNot" class="girdi metin-alani" rows="4" placeholder="ör. Bu istek geçer. Hedefim beni bekliyor, kupon değil."></textarea>
+      <button class="buton" id="tanismaBitir">Tamamla</button>
+      <button class="metin-buton" id="notuAtla">Şimdilik geç</button>
     </div>
 
   </div>
 
-  <!-- ===== ANA UYGULAMA ===== -->
-  <main id="uygulama" hidden>
+  <!-- ================= UYGULAMA ================= -->
+  <div id="uygulama" hidden>
 
-    <div class="kart">
-      <h1>Kasam</h1>
-      <p>Bahis oynamayarak biriktirdiğin tutar:</p>
-      <h2 class="tutar" id="tutar">0 TL</h2>
-      <p class="net-sonuc" id="netSonuc"></p>
-      <p class="amac" id="amacYazisi"></p>
-    </div>
+    <!-- ---------- KASA ---------- -->
+    <section class="ekran" id="ekran-kasa">
+      <header class="kahraman">
+        <div class="kahraman-ust">
+          <span class="logo">Kuponsuz</span>
+          <button class="ikon-buton" id="destekAc" aria-label="Destek">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M5.6 5.6l3.6 3.6M14.8 14.8l3.6 3.6M18.4 5.6l-3.6 3.6M9.2 14.8l-3.6 3.6"/></svg>
+          </button>
+        </div>
+        <span class="kahraman-etiket">Kasanda biriken</span>
+        <div class="kahraman-tutar">
+          <span class="buyuk-rakam" id="tutar">0</span>
+          <span class="birim">TL</span>
+        </div>
+        <p class="kahraman-not" id="netSonuc"></p>
+        <div class="motivasyon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#CFE3D6" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-9"/><path d="M12 12c0-4-3-6.5-7-6.5 0 4 3 6.5 7 6.5z"/><path d="M12 14.5c0-3.2 2.4-5.5 6.5-5.5 0 3.2-2.4 5.5-6.5 5.5z"/></svg>
+          <span id="motivasyonYazisi"></span>
+        </div>
+      </header>
 
-    <div class="kart">
-      <h2>Hedefim</h2>
+      <div class="icerik ust-bindir">
+        <section class="kart">
+          <div class="yoklama-ust">
+            <span class="kucuk-baslik">Günlük yoklama</span>
+            <span class="yoklama-soru">Bugün gerçek parayla bahis oynadın mı?</span>
+          </div>
+          <div class="hafta" id="haftaGunleri"></div>
+          <p class="yoklama-durum" id="yoklamaDurum"></p>
+          <div class="satir" id="yoklamaDugmeleri">
+            <button class="buton" id="oynamadim">Oynamadım</button>
+            <button class="buton cizgili" id="oynadim">Oynadım</button>
+          </div>
+          <div class="yoklama-sonuc" id="yoklamaSonuc" hidden>
+            <div class="kucuk-madalyon" id="yoklamaSimge"></div>
+            <div class="yoklama-sonuc-metin">
+              <span class="yoklama-sonuc-baslik" id="yoklamaBaslik"></span>
+              <span id="yoklamaAlt"></span>
+            </div>
+          </div>
+          <button class="metin-buton sol" id="yoklamaDegistir" hidden>Yanlış mı işaretledin? Değiştir</button>
+        </section>
 
-      <div id="hedefFormu">
-        <p class="durum">Biriktirdiğin parayla ne almak isterdin?</p>
-        <input type="text" id="hedefAdi" class="girdi" placeholder="Hedef (ör. Televizyon)">
-        <input type="number" id="hedefTutari" class="girdi" placeholder="Hedef tutar (TL)">
-        <button class="buton" id="hedefKaydet">Hedefi kaydet</button>
+        <section class="kart">
+          <div id="hedefFormu">
+            <h2>Hedefin</h2>
+            <p class="soluk">Biriktirdiğin parayla ne almak isterdin?</p>
+            <input type="text" id="hedefAdi" class="girdi" placeholder="Hedef (ör. Televizyon)">
+            <input type="text" inputmode="numeric" id="hedefTutari" class="girdi" placeholder="Hedef tutar (TL)">
+            <button class="buton" id="hedefKaydet">Hedefi kaydet</button>
+          </div>
+
+          <div id="hedefIlerleme" class="hedef-ilerleme" hidden>
+            <div class="halka">
+              <svg viewBox="0 0 92 92" aria-hidden="true">
+                <circle class="halka-zemin" cx="46" cy="46" r="38"/>
+                <circle class="halka-dolgu" id="halkaDolgu" cx="46" cy="46" r="38" stroke-dasharray="0 239"/>
+              </svg>
+              <span class="halka-yazi" id="hedefYuzde">%0</span>
+            </div>
+            <div class="hedef-bilgi">
+              <span class="kucuk-baslik">Hedefin</span>
+              <span class="hedef-adi" id="hedefBaslik"></span>
+              <span id="hedefDurum"></span>
+              <span class="soluk" id="hedefKalan"></span>
+              <button class="metin-buton sol" id="hedefDegistir">Hedefi değiştir</button>
+            </div>
+          </div>
+
+          <p class="hedef-mesaji" id="hedefMesaji"></p>
+        </section>
+
+        <button class="durtu-dugmesi durtu-baslat">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1F4D3A" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 11c2.5-4 5-4 7.5 0s5 4 7.5 0 3.5-3 5-2"/><path d="M2 17c2.5-3 5-3 7.5 0s5 3 7.5 0 3.5-2 5-1.5"/></svg>
+          <span class="durtu-metin">
+            <span class="durtu-baslik">Canım kupon yapmak istiyor</span>
+            <span class="durtu-alt">Birlikte birkaç dakika bekleyelim</span>
+          </span>
+        </button>
+
+        <button class="ozet-karti ozet-ac" id="ozetKarti" hidden>
+          <span class="ozet-karti-simge">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V11M10 19V5M16 19v-6M22 19H2"/></svg>
+          </span>
+          <span class="durtu-metin">
+            <span class="durtu-baslik">Haftalık özetin hazır</span>
+            <span class="durtu-alt" id="ozetKartiAralik"></span>
+          </span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4E5F55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
       </div>
+    </section>
 
-      <div id="hedefIlerleme" hidden>
-        <p class="hedef-baslik" id="hedefBaslik"></p>
-        <div class="cubuk"><div class="cubuk-dolgu" id="cubukDolgu"></div></div>
-        <p class="durum" id="hedefDurum"></p>
-        <button class="buton ikincil kucuk" id="hedefDegistir">Hedefi değiştir</button>
+    <!-- ---------- YENİ KUPON ---------- -->
+    <section class="ekran" id="ekran-kupon" hidden>
+      <div class="icerik">
+        <header class="sayfa-baslik">
+          <h1>Yeni kupon</h1>
+          <p>Hiçbir para çekilmez. Tutar kasana eklenir.</p>
+        </header>
+
+        <button class="durtu-serit durtu-baslat">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 11c2.5-4 5-4 7.5 0s5 4 7.5 0 3.5-3 5-2"/><path d="M2 17c2.5-3 5-3 7.5 0s5 3 7.5 0 3.5-2 5-1.5"/></svg>
+          Kupondan önce birkaç dakika bekleyelim mi?
+        </button>
+
+        <section class="kart">
+          <div class="alan">
+            <label class="etiket" for="mac">Maç</label>
+            <input type="text" id="mac" class="girdi" placeholder="ör. Galatasaray – Fenerbahçe">
+          </div>
+
+          <div class="alan">
+            <span class="etiket">Bahis türü</span>
+            <div class="cipler" id="bahisTurleri">
+              <button class="cip" data-tur="MS 1">MS 1</button>
+              <button class="cip" data-tur="MS X">MS X</button>
+              <button class="cip" data-tur="MS 2">MS 2</button>
+              <button class="cip" data-tur="KG Var">KG Var</button>
+              <button class="cip" data-tur="KG Yok">KG Yok</button>
+              <button class="cip" data-tur="2.5 Üst">2.5 Üst</button>
+              <button class="cip" data-tur="2.5 Alt">2.5 Alt</button>
+              <button class="cip" data-tur="kendin">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>
+                Kendin yaz
+              </button>
+            </div>
+          </div>
+
+          <div class="satir">
+            <div class="alan genis" id="kendiTurAlani" hidden>
+              <label class="etiket" for="kendiTur">Bahsin</label>
+              <input type="text" id="kendiTur" class="girdi" placeholder="ör. Ev sahibi en az 2 gol atar">
+            </div>
+            <div class="alan tam" id="oranAlani">
+              <label class="etiket" for="oran">Oran</label>
+              <input type="text" inputmode="decimal" id="oran" class="girdi" placeholder="1,85">
+            </div>
+          </div>
+
+          <button class="buton ikincil" id="macEkle">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            Kupona ekle
+          </button>
+        </section>
+
+        <section class="kart">
+          <span class="kucuk-baslik" id="kuponBasligi"></span>
+          <ul class="mac-listesi" id="macListesi"></ul>
+        </section>
+
+        <section class="kart">
+          <div class="ozet">
+            <span>Toplam oran</span>
+            <strong class="rakam" id="toplamOran">-</strong>
+          </div>
+          <div class="ozet">
+            <label for="miktar">Yatıracağın tutar</label>
+            <div class="tutar-girdi">
+              <input type="text" inputmode="decimal" id="miktar" class="girdi kisa" placeholder="0">
+              <span>TL</span>
+            </div>
+          </div>
+          <div class="ozet sonuk">
+            <span>Olası kazanç</span>
+            <span id="olasiKazanc">-</span>
+          </div>
+          <button class="buton" id="onayla">Kuponu onayla</button>
+          <p class="mesaj" id="mesaj"></p>
+        </section>
       </div>
+    </section>
 
-      <p class="hedef-mesaji" id="hedefMesaji"></p>
-      <ul class="rozetler" id="rozetler"></ul>
-    </div>
+    <!-- ---------- KUPONLARIM ---------- -->
+    <section class="ekran" id="ekran-kuponlarim" hidden>
+      <div class="icerik">
+        <header class="sayfa-baslik">
+          <h1>Kuponlarım</h1>
+        </header>
 
-    <div class="kart">
-      <h2>Yeni kupon</h2>
+        <section class="net-serit">
+          <span id="netSeritYazi"></span>
+          <strong class="rakam" id="netSeritTutar"></strong>
+        </section>
 
-      <input type="text" id="mac" class="girdi" placeholder="Maç (ör. Galatasaray - Fenerbahçe)">
-      <div class="satir">
-        <select id="tahmin" class="girdi">
-          <option>MS 1</option>
-          <option>MS X</option>
-          <option>MS 2</option>
-          <option>KG Var</option>
-          <option>KG Yok</option>
-          <option>2.5 Üst</option>
-          <option>2.5 Alt</option>
-        </select>
-        <input type="number" id="oran" class="girdi" step="0.01" placeholder="Oran">
+        <div class="segment">
+          <button class="segment-dugme" data-sekme="bekleyen" id="sekmeBekleyen">Bekleyen</button>
+          <button class="segment-dugme" data-sekme="sonuclanan" id="sekmeSonuclanan">Sonuçlanan</button>
+        </div>
+
+        <ul class="kupon-listesi" id="kuponListesi"></ul>
       </div>
-      <button class="buton ikincil" id="macEkle">+ Maçı kupona ekle</button>
+    </section>
 
-      <ul class="mac-listesi" id="macListesi"></ul>
+    <!-- ---------- BAŞARILAR ---------- -->
+    <section class="ekran" id="ekran-basarilar" hidden>
+      <div class="icerik">
+        <header class="sayfa-baslik">
+          <h1>Başarılarım</h1>
+          <p id="rozetOzeti"></p>
+        </header>
 
-      <div class="ozet">
-        <span>Toplam oran</span>
-        <strong id="toplamOran">-</strong>
+        <button class="buton cizgili kucuk ozet-ac">Haftalık özetini gör</button>
+
+        <div class="icerik-grubu" id="rozetGruplari"></div>
+
+        <section class="kart" id="hedefRozetleri" hidden>
+          <h2>Tamamlanan hedefler</h2>
+          <ul class="tamamlananlar" id="rozetler"></ul>
+        </section>
       </div>
+    </section>
 
-      <input type="number" id="miktar" class="girdi" placeholder="Kupona yatıracağın tutar (TL)">
+    <!-- ---------- DÜRTÜ ANI: BEKLEME ---------- -->
+    <section class="ekran ekran-koyu" id="ekran-durtu" hidden>
+      <div class="icerik">
+        <div class="koyu-ust">
+          <span class="kucuk-baslik acik">Dürtü anı</span>
+          <button class="ikon-buton" id="durtuKapat" aria-label="Kapat">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          </button>
+        </div>
 
-      <div class="ozet">
-        <span>Olası kazanç</span>
-        <strong id="olasiKazanc">-</strong>
+        <h1>Bu istek bir dalga. Birlikte geçmesini bekleyelim.</h1>
+
+        <div class="sayac">
+          <div class="sayac-halka">
+            <svg viewBox="0 0 150 150" aria-hidden="true">
+              <circle class="sayac-zemin" cx="75" cy="75" r="66"/>
+              <circle class="sayac-dolgu" id="sayacDolgu" cx="75" cy="75" r="66" stroke-dasharray="0 415"/>
+            </svg>
+            <div class="sayac-yazi">
+              <span class="rakam" id="sayacZaman">10:00</span>
+              <span>kaldı</span>
+            </div>
+          </div>
+          <span class="nefes" id="nefesYazisi">Nefes al</span>
+          <span class="acik kucuk" id="durtuHedef"></span>
+        </div>
+
+        <section class="koyu-kutu">
+          <span class="kucuk-baslik acik" id="notBaslik">Kendine yazdığın not</span>
+          <p class="not-metni" id="notMetni"></p>
+          <span class="acik kucuk" id="notAlt"></span>
+        </section>
+
+        <section class="alan">
+          <span class="durtu-soru">Bu isteği ne tetikledi?</span>
+          <div class="cipler" id="tetikleyiciler"></div>
+        </section>
+
+        <section class="alan">
+          <span class="durtu-soru">Beklerken şunlardan birini dene</span>
+          <div class="oneri-listesi" id="oneriListesi"></div>
+          <span class="acik kucuk" id="oneriMesaji"></span>
+          <button class="metin-buton acik sol" id="baskaOneri">Başka öneri göster</button>
+        </section>
+
+        <button class="buton beyaz" id="istekGecti">İstek geçti</button>
       </div>
+    </section>
 
-      <button class="buton" id="onayla">Kuponu onayla</button>
-      <p class="mesaj" id="mesaj"></p>
-    </div>
+    <!-- ---------- DÜRTÜ ANI: SONUÇ ---------- -->
+    <section class="ekran" id="ekran-durtu-sonuc" hidden>
+      <div class="icerik">
 
-    <div class="kart">
-      <h2>Kuponlarım</h2>
-      <ul class="kupon-listesi" id="kuponListesi"></ul>
-    </div>
+        <div class="sonuc-icerik" id="sonucSoru">
+          <div class="buyuk-simge">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 11c2.5-4 5-4 7.5 0s5 4 7.5 0 3.5-3 5-2"/><path d="M2 17c2.5-3 5-3 7.5 0s5 3 7.5 0 3.5-2 5-1.5"/></svg>
+          </div>
+          <h1>On dakika geçti. İstek hâlâ orada mı?</h1>
+          <button class="buton" id="cevapGecti">Geçti, iyiyim</button>
+          <button class="buton cizgili" id="cevapDevam">Hâlâ istiyorum</button>
+        </div>
 
-    <div class="kart" id="destek">
-      <h2>Destek</h2>
-      <p>Bahsi azaltmak ya da bırakmak kolay değil ve bunu tek başına yapmak zorunda değilsin.</p>
-      <p><strong>115 YEDAM Danışma Hattı</strong> (Yeşilay Danışmanlık Merkezi), kumar ve bahis konusunda ücretsiz destek veriyor. Hat 08.30 ile 00.00 arasında açık; bahis oynayanlar kadar aileleri ve yakınları da arayabilir.</p>
-      <a class="buton baglanti" href="tel:115">📞 115'i ara</a>
-      <a class="buton ikincil baglanti bosluklu" href="https://www.yedam.org.tr" target="_blank" rel="noopener">yedam.org.tr</a>
-      <p class="durum">Kendine zarar verme düşüncelerin olursa beklemeden 112'yi ara.</p>
-    </div>
+        <div class="sonuc-icerik" id="sonucGecti" hidden>
+          <div class="buyuk-simge madalyonlu">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 11c2.5-4 5-4 7.5 0s5 4 7.5 0 3.5-3 5-2"/><path d="M2 17c2.5-3 5-3 7.5 0s5 3 7.5 0 3.5-2 5-1.5"/></svg>
+          </div>
+          <h1>Dalgayı atlattın.</h1>
+          <p class="giris-metni" id="gectiMetni"></p>
+          <p class="soluk" id="gectiEtkinlik"></p>
+          <button class="buton" data-git="kasa">Kasaya dön</button>
+        </div>
 
-    <button class="metin-buton" id="tanismayiSifirla">Tanışma ekranını tekrar göster</button>
+        <div class="sonuc-icerik" id="sonucDevam" hidden>
+          <h1>Sorun değil, bu da olur.</h1>
+          <p class="giris-metni">Gerçek bahis yerine sanal kupon yapabilirsin; paran cebinde kalır. Ya da biriyle konuşmak iyi gelebilir.</p>
+          <button class="buton" data-git="kupon">Sanal kupon yap</button>
+          <a class="buton cizgili" href="tel:115">115 YEDAM'ı ara</a>
+          <button class="metin-buton" id="biraDahaBekle">Biraz daha bekle</button>
+        </div>
 
-  </main>
+      </div>
+    </section>
 
-   <script src="app.js"></script>
+    <!-- ---------- ZOR GÜN ---------- -->
+    <section class="ekran" id="ekran-zor-gun" hidden>
+      <div class="icerik">
+        <div class="sag-ust">
+          <button class="ikon-buton acik-zemin" data-git="kasa" aria-label="Kapat">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          </button>
+        </div>
+        <div class="sonuc-icerik">
+          <div class="buyuk-simge">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-9"/><path d="M12 12c0-4-3-6.5-7-6.5 0 4 3 6.5 7 6.5z"/><path d="M12 14.5c0-3.2 2.4-5.5 6.5-5.5 0 3.2-2.4 5.5-6.5 5.5z"/></svg>
+          </div>
+          <h1>Bir gün her şeyi silmez.</h1>
+          <p class="giris-metni" id="zorGunMetni"></p>
+          <section class="kart">
+            <label class="etiket" for="harcama">Bugün ne kadar harcadın? <span class="istege-bagli">İsteğe bağlı</span></label>
+            <input type="text" inputmode="decimal" id="harcama" class="girdi" placeholder="Tutar (TL)">
+            <p class="soluk kucuk">Kasandan düşülmez. Sadece kendi tablonu görmen için.</p>
+          </section>
+          <button class="buton" id="yarinBasla">Yarın yeniden başla</button>
+          <a class="buton cizgili" href="tel:115">115 YEDAM ile konuş</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- HAFTALIK ÖZET ---------- -->
+    <section class="ekran" id="ekran-ozet" hidden>
+      <header class="kahraman ozet-kahraman">
+        <div class="kahraman-ust">
+          <span class="kahraman-etiket" id="ozetAralik"></span>
+          <button class="ikon-buton" data-git="kasa" aria-label="Kapat">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          </button>
+        </div>
+        <h1 id="ozetBaslik"></h1>
+        <p class="kahraman-not" id="ozetAlt"></p>
+      </header>
+
+      <div class="icerik">
+        <div class="istatistikler" id="ozetSayilar"></div>
+
+        <section class="kart" id="ozetGercek" hidden>
+          <h2>Gerçek bahis</h2>
+          <p class="duz" id="ozetGercekMetni"></p>
+        </section>
+
+        <section class="kart" id="ozetTetikler" hidden>
+          <h2>İstekler ne zaman geldi?</h2>
+          <div class="cubuklar" id="ozetCubuklar"></div>
+          <p class="ozet-oneri" id="ozetOneri"></p>
+        </section>
+
+        <section class="kart" id="ozetHedef" hidden>
+          <div class="ozet">
+            <strong id="ozetHedefAdi"></strong>
+            <span id="ozetHedefYuzde"></span>
+          </div>
+          <div class="yatay-cubuk"><div id="ozetHedefDolgu"></div></div>
+          <span class="soluk kucuk" id="ozetHedefAlt"></span>
+        </section>
+
+        <button class="buton" id="ozetBitir">Yeni haftaya başla</button>
+      </div>
+    </section>
+
+    <!-- ---------- DESTEK ---------- -->
+    <section class="ekran" id="ekran-destek" hidden>
+      <div class="icerik">
+        <button class="geri" data-git="kasa">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+          Kasaya dön
+        </button>
+        <header class="sayfa-baslik">
+          <h1>Destek</h1>
+        </header>
+
+        <section class="kart">
+          <p class="duz">Bahsi azaltmak ya da bırakmak kolay değil ve bunu tek başına yapmak zorunda değilsin.</p>
+          <p class="duz"><strong>115 YEDAM Danışma Hattı</strong> (Yeşilay Danışmanlık Merkezi), kumar ve bahis konusunda ücretsiz destek veriyor. Hat 08.30 ile 00.00 arasında açık; bahis oynayanlar kadar aileleri ve yakınları da arayabilir.</p>
+          <a class="buton" href="tel:115">115'i ara</a>
+          <a class="buton cizgili" href="https://www.yedam.org.tr" target="_blank" rel="noopener">yedam.org.tr</a>
+          <p class="soluk kucuk">Kendine zarar verme düşüncelerin olursa beklemeden 112'yi ara.</p>
+        </section>
+
+        <section class="kart">
+          <h2>Sana iyi gelenler</h2>
+          <p class="soluk">Dürtü anında karşına çıkan öneriler ve kendine yazdığın not.</p>
+          <button class="buton cizgili kucuk" id="kisiselDuzenle">Etkinliklerini ve notunu düzenle</button>
+        </section>
+
+        <p class="amac" id="amacYazisi"></p>
+        <button class="metin-buton" id="tanismayiSifirla">Tanışma ekranını tekrar göster</button>
+      </div>
+    </section>
+
+    <!-- ---------- ALT MENÜ ---------- -->
+    <nav class="alt-menu" aria-label="Ana menü">
+      <button class="menu-dugme" data-git="kasa">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18M16 14.5h2"/></svg>
+        Kasa
+      </button>
+      <button class="menu-dugme" data-git="kupon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16v3a2 2 0 0 0 0 4v3H4v-3a2 2 0 0 0 0-4z"/><path d="M12 10v4M10 12h4"/></svg>
+        Kupon
+      </button>
+      <button class="menu-dugme" data-git="kuponlarim">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></svg>
+        Kuponlarım
+      </button>
+      <button class="menu-dugme" data-git="basarilar">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5.5"/><path d="M9 14l-1.5 7 4.5-2.5 4.5 2.5-1.5-7"/></svg>
+        Başarılar
+      </button>
+    </nav>
+
+    <div class="bildirim" id="bildirim" role="status" aria-live="polite"></div>
+  </div>
+
+  <script src="mesajlar.js"></script>
+  <script src="app.js"></script>
+  <script src="durtu.js"></script>
+  <script src="yoklama.js"></script>
+  <script src="ozet.js"></script>
   <script src="tanisma.js"></script>
   <script>
     if ("serviceWorker" in navigator) {

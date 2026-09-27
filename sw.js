@@ -1,12 +1,17 @@
 // Service worker: uygulama dosyalarını telefona kaydeder,
 // böylece internet olmadan da açılabilir.
-const ONBELLEK = "kuponsuz-v1";
+// Uygulamada büyük bir değişiklik yaptığında sürüm numarasını artır.
+const ONBELLEK = "kuponsuz-v5";
 
 const DOSYALAR = [
   "./",
   "./index.html",
   "./style.css",
+  "./mesajlar.js",
   "./app.js",
+  "./durtu.js",
+  "./yoklama.js",
+  "./ozet.js",
   "./tanisma.js",
   "./manifest.json",
   "./ikon-192.png",
